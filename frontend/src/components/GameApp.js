@@ -2,15 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { apiClient } from '../api/client';
 import CharacterCreation from './CharacterCreation';
 import CharacterMenu from './CharacterMenu';
+import PartyMenu from './PartyMenu';
+import RelationsMenu from './RelationsMenu';
+import BestiaryMenu from './BestiaryMenu';
+import FactionsMenu from './FactionsMenu';
+import CombatUI from './CombatUI';
 import SkillCheck from './SkillCheck';
 import '../style.css';
 
 export default function GameApp() {
-  const [gameState, setGameState] = useState('CHARACTER_CREATION'); // CHARACTER_CREATION, GAME_MENU, CHARACTER_MENU, SKILL_CHECK
+  const [gameState, setGameState] = useState('CHARACTER_CREATION');
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [log, setLog] = useState(['System Initialized...', 'Welcome to the terminal.']);
+  const [combatId, setCombatId] = useState(null);
 
   const addLog = (entry) => {
     setLog(prev => [entry, ...prev].slice(0, 10));
@@ -78,17 +84,24 @@ export default function GameApp() {
           ))}
         </div>
         <div style={{ marginBottom: '20px' }}>
-          <button
-            className="term-button"
-            onClick={() => setGameState('CHARACTER_MENU')}
-          >
+          <button className="term-button" onClick={() => setGameState('CHARACTER_MENU')}>
             CHARACTER
           </button>
-          <button className="term-button">INVENTORY</button>
-          <button className="term-button">PARTY</button>
-          <button className="term-button">RELATIONS</button>
-          <button className="term-button">BESTIARY</button>
-          <button className="term-button">STORY</button>
+          <button className="term-button" onClick={() => setGameState('INVENTORY_MENU')}>
+            INVENTORY
+          </button>
+          <button className="term-button" onClick={() => setGameState('PARTY_MENU')}>
+            PARTY
+          </button>
+          <button className="term-button" onClick={() => setGameState('RELATIONS_MENU')}>
+            RELATIONS
+          </button>
+          <button className="term-button" onClick={() => setGameState('BESTIARY_MENU')}>
+            BESTIARY
+          </button>
+          <button className="term-button" onClick={() => setGameState('FACTIONS_MENU')}>
+            FACTIONS
+          </button>
         </div>
       </div>
     );
@@ -99,18 +112,68 @@ export default function GameApp() {
       <CharacterMenu
         player={player}
         onBack={() => setGameState('GAME_MENU')}
-        onRollSkill={(skillName, statName) => setGameState('SKILL_CHECK')}
       />
     );
   }
 
-  if (gameState === 'SKILL_CHECK') {
+  if (gameState === 'PARTY_MENU') {
     return (
-      <SkillCheck
-        player={player}
-        onBack={() => setGameState('CHARACTER_MENU')}
-        addLog={addLog}
+      <PartyMenu
+        characterId={player.id}
+        onBack={() => setGameState('GAME_MENU')}
       />
+    );
+  }
+
+  if (gameState === 'RELATIONS_MENU') {
+    return (
+      <RelationsMenu
+        characterId={player.id}
+        onBack={() => setGameState('GAME_MENU')}
+      />
+    );
+  }
+
+  if (gameState === 'BESTIARY_MENU') {
+    return (
+      <BestiaryMenu
+        characterId={player.id}
+        onBack={() => setGameState('GAME_MENU')}
+      />
+    );
+  }
+
+  if (gameState === 'FACTIONS_MENU') {
+    return (
+      <FactionsMenu
+        characterId={player.id}
+        onBack={() => setGameState('GAME_MENU')}
+      />
+    );
+  }
+
+  if (gameState === 'COMBAT') {
+    return (
+      <CombatUI
+        combatId={combatId}
+        characterId={player.id}
+        onBack={() => {
+          setCombatId(null);
+          setGameState('GAME_MENU');
+        }}
+      />
+    );
+  }
+
+  if (gameState === 'INVENTORY_MENU') {
+    return (
+      <div className="terminal-box">
+        <h1>[MENU: INVENTORY]</h1>
+        <p>Coming soon...</p>
+        <button className="term-button" onClick={() => setGameState('GAME_MENU')}>
+          BACK
+        </button>
+      </div>
     );
   }
 }
