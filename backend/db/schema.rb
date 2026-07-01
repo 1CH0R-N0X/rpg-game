@@ -1,4 +1,4 @@
-ActiveRecord::Schema.define(version: 2) do
+ActiveRecord::Schema.define(version: 3) do
   create_table :characters, force: :cascade do |t|
     t.string :name, null: false
     t.string :race, null: false
@@ -139,5 +139,56 @@ ActiveRecord::Schema.define(version: 2) do
     t.string :faction_involved
     t.timestamps
     t.foreign_key :characters
+  end
+
+  create_table :quests, force: :cascade do |t|
+    t.integer :character_id, null: false
+    t.integer :npc_id
+    t.string :title, null: false
+    t.text :description
+    t.string :quest_type, default: 'generic'
+    t.string :status, default: 'active'
+    t.integer :reward_exp, default: 0
+    t.integer :reward_gold, default: 0
+    t.datetime :completed_at
+    t.timestamps
+    t.foreign_key :characters
+  end
+
+  create_table :locations, force: :cascade do |t|
+    t.integer :character_id, null: false
+    t.string :name, null: false
+    t.text :description
+    t.string :location_type, default: 'dungeon'
+    t.string :danger_level, default: 'Medium'
+    t.integer :visited_count, default: 0
+    t.datetime :discovered_at
+    t.timestamps
+    t.foreign_key :characters
+  end
+
+  create_table :encounters, force: :cascade do |t|
+    t.integer :character_id, null: false
+    t.integer :location_id
+    t.string :encounter_type, null: false
+    t.text :description
+    t.integer :reward_exp, default: 0
+    t.integer :reward_gold, default: 0
+    t.timestamps
+    t.foreign_key :characters
+    t.foreign_key :locations
+  end
+
+  create_table :enemies, force: :cascade do |t|
+    t.string :name, null: false
+    t.string :enemy_type, default: 'Generic'
+    t.integer :hp, default: 10
+    t.integer :attack_bonus, default: 2
+    t.integer :defense, default: 1
+    t.integer :dexterity, default: 10
+    t.string :threat_level, default: 'Medium'
+    t.integer :loot_gold, default: 0
+    t.integer :experience_reward, default: 0
+    t.timestamps
   end
 end

@@ -123,4 +123,16 @@ export const apiClient = {
   getNPCDialogue: (characterId, npcId) =>
     request(`/narrative/dialogue/${characterId}/${npcId}`),
   getStoryLog: (characterId) => request(`/narrative/story-log/${characterId}`),
+
+  // Exploration
+  explore: (characterId) =>
+    request(`/explore/${characterId}`, { method: 'POST' }),
+  getEncounters: (characterId) => request(`/encounters/${characterId}`),
+
+  // Quests
+  getQuests: (characterId) => request(`/quests/${characterId}`),
+  createQuestFromNPC: (characterId, npcId) =>
+    request(`/quests/${characterId}/${npcId}`, { method: 'POST' }),
+  completeQuest: (characterId, questId) =>
+    request(`/quests/${characterId}/${questId}/complete`, { method: 'POST' }),
 };

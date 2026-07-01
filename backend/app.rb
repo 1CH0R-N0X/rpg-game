@@ -143,4 +143,26 @@ class RPGGameAPI < Sinatra::Base
   get '/api/narrative/story-log/:character_id' do
     NarrativeController.get_story_log(params[:character_id])
   end
+
+  # Exploration routes
+  post '/api/explore/:character_id' do
+    ExplorationController.explore(params[:character_id])
+  end
+
+  get '/api/encounters/:character_id' do
+    ExplorationController.get_encounters(params[:character_id])
+  end
+
+  # Quest routes
+  get '/api/quests/:character_id' do
+    QuestController.get_all(params[:character_id])
+  end
+
+  post '/api/quests/:character_id/:npc_id' do
+    QuestController.create_from_npc(params[:character_id], params[:npc_id])
+  end
+
+  post '/api/quests/:character_id/:quest_id/complete' do
+    QuestController.complete(params[:character_id], params[:quest_id])
+  end
 end

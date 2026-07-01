@@ -8,6 +8,8 @@ import BestiaryMenu from './BestiaryMenu';
 import FactionsMenu from './FactionsMenu';
 import CombatUI from './CombatUI';
 import SkillCheck from './SkillCheck';
+import ExploreMenu from './ExploreMenu';
+import QuestMenu from './QuestMenu';
 import '../style.css';
 
 export default function GameApp() {
@@ -19,7 +21,7 @@ export default function GameApp() {
   const [combatId, setCombatId] = useState(null);
 
   const addLog = (entry) => {
-    setLog(prev => [entry, ...prev].slice(0, 10));
+    setLog(prev => [entry, ...prev].slice(0, 15));
   };
 
   const handleCreateCharacter = async (characterData) => {
@@ -80,15 +82,18 @@ export default function GameApp() {
         <h1>[MENU: TERMINAL]</h1>
         <div className="terminal-log" style={{ background: '#000', padding: '10px', marginBottom: '20px' }}>
           {log.map((entry, i) => (
-            <p key={i}>{entry}</p>
+            <p key={i} style={{ fontSize: '0.9em' }}>&gt; {entry}</p>
           ))}
         </div>
         <div style={{ marginBottom: '20px' }}>
+          <button className="term-button" onClick={() => setGameState('EXPLORE_MENU')}>
+            EXPLORE
+          </button>
           <button className="term-button" onClick={() => setGameState('CHARACTER_MENU')}>
             CHARACTER
           </button>
-          <button className="term-button" onClick={() => setGameState('INVENTORY_MENU')}>
-            INVENTORY
+          <button className="term-button" onClick={() => setGameState('QUEST_MENU')}>
+            QUESTS
           </button>
           <button className="term-button" onClick={() => setGameState('PARTY_MENU')}>
             PARTY
@@ -104,6 +109,26 @@ export default function GameApp() {
           </button>
         </div>
       </div>
+    );
+  }
+
+  if (gameState === 'EXPLORE_MENU') {
+    return (
+      <ExploreMenu
+        characterId={player.id}
+        onBack={() => setGameState('GAME_MENU')}
+        addLog={addLog}
+      />
+    );
+  }
+
+  if (gameState === 'QUEST_MENU') {
+    return (
+      <QuestMenu
+        characterId={player.id}
+        onBack={() => setGameState('GAME_MENU')}
+        addLog={addLog}
+      />
     );
   }
 
@@ -165,15 +190,12 @@ export default function GameApp() {
     );
   }
 
-  if (gameState === 'INVENTORY_MENU') {
-    return (
-      <div className="terminal-box">
-        <h1>[MENU: INVENTORY]</h1>
-        <p>Coming soon...</p>
-        <button className="term-button" onClick={() => setGameState('GAME_MENU')}>
-          BACK
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="terminal-box">
+      <h1>Unknown State</h1>
+      <button className="term-button" onClick={() => setGameState('GAME_MENU')}>
+        Return to Menu
+      </button>
+    </div>
+  );
 }
