@@ -81,4 +81,88 @@ class RPGGameAPI < Sinatra::Base
   get '/api/party/:character_id' do
     PartyController.get(params[:character_id])
   end
+
+  # Relationships routes
+  get '/api/relationships/:character_id' do
+    RelationshipsController.get_all(params[:character_id])
+  end
+
+  post '/api/relationships/:character_id/:npc_id/update' do
+    data = JSON.parse(request.body.read)
+    RelationshipsController.update_relationship(
+      params[:character_id],
+      params[:npc_id],
+      data['point_change'],
+      data['context']
+    )
+  end
+
+  # Bestiary routes
+  get '/api/bestiary/:character_id' do
+    BestiaryController.get_all(params[:character_id])
+  end
+
+  post '/api/bestiary/:character_id' do
+    BestiaryController.add_entry(params[:character_id], request.body.read)
+  end
+
+  # Faction routes
+  get '/api/factions/:character_id' do
+    FactionsController.get_all(params[:character_id])
+  end
+
+  post '/api/factions/:character_id' do
+    FactionsController.create(params[:character_id], request.body.read)
+  end
+
+  post '/api/factions/:faction_id/members' do
+    data = JSON.parse(request.body.read)
+    FactionsController.add_member(params[:faction_id], data['member_name'], data['npc_id'])
+  end
+
+  # Reputation routes
+  get '/api/reputation/:character_id' do
+    ReputationController.get_all(params[:character_id])
+  end
+
+  post '/api/reputation/:character_id/:faction_id' do
+    data = JSON.parse(request.body.read)
+    ReputationController.update(params[:character_id], params[:faction_id], data['point_change'])
+  end
+
+  # Narrative routes
+  post '/api/narrative/encounter' do
+    data = JSON.parse(request.body.read)
+    NarrativeController.generate_encounter(data['character_id'], data['location'])
+  end
+
+  get '/api/narrative/dialogue/:character_id/:npc_id' do
+    NarrativeController.generate_npc_dialogue(params[:character_id], params[:npc_id])
+  end
+
+  get '/api/narrative/story-log/:character_id' do
+    NarrativeController.get_story_log(params[:character_id])
+  end
+
+  # Exploration routes
+  post '/api/explore/:character_id' do
+    ExplorationController.explore(params[:character_id])
+  end
+
+  get '/api/encounters/:character_id' do
+    ExplorationController.get_encounters(params[:character_id])
+  end
+
+  # Quest routes
+  get '/api/quests/:character_id' do
+    QuestController.get_all(params[:character_id])
+  end
+
+  post '/api/quests/:character_id/:npc_id' do
+    QuestController.create_from_npc(params[:character_id], params[:npc_id])
+  end
+
+  post '/api/quests/:character_id/:quest_id/complete' do
+    QuestController.complete(params[:character_id], params[:quest_id])
+  end
 end

@@ -76,4 +76,63 @@ export const apiClient = {
       method: 'POST',
       body: JSON.stringify(npcData),
     }),
+
+  // Relationships
+  getRelationships: (characterId) => request(`/relationships/${characterId}`),
+  updateRelationship: (characterId, npcId, pointChange, context) =>
+    request(`/relationships/${characterId}/${npcId}/update`, {
+      method: 'POST',
+      body: JSON.stringify({ point_change: pointChange, context: context }),
+    }),
+
+  // Bestiary
+  getBestiary: (characterId) => request(`/bestiary/${characterId}`),
+  addBestiaryEntry: (characterId, entryData) =>
+    request(`/bestiary/${characterId}`, {
+      method: 'POST',
+      body: JSON.stringify(entryData),
+    }),
+
+  // Factions
+  getFactions: (characterId) => request(`/factions/${characterId}`),
+  createFaction: (characterId, factionData) =>
+    request(`/factions/${characterId}`, {
+      method: 'POST',
+      body: JSON.stringify(factionData),
+    }),
+  addFactionMember: (factionId, memberName, npcId) =>
+    request(`/factions/${factionId}/members`, {
+      method: 'POST',
+      body: JSON.stringify({ member_name: memberName, npc_id: npcId }),
+    }),
+
+  // Reputation
+  getReputation: (characterId) => request(`/reputation/${characterId}`),
+  updateReputation: (characterId, factionId, pointChange) =>
+    request(`/reputation/${characterId}/${factionId}`, {
+      method: 'POST',
+      body: JSON.stringify({ point_change: pointChange }),
+    }),
+
+  // Narrative
+  generateEncounter: (characterId, location) =>
+    request('/narrative/encounter', {
+      method: 'POST',
+      body: JSON.stringify({ character_id: characterId, location: location }),
+    }),
+  getNPCDialogue: (characterId, npcId) =>
+    request(`/narrative/dialogue/${characterId}/${npcId}`),
+  getStoryLog: (characterId) => request(`/narrative/story-log/${characterId}`),
+
+  // Exploration
+  explore: (characterId) =>
+    request(`/explore/${characterId}`, { method: 'POST' }),
+  getEncounters: (characterId) => request(`/encounters/${characterId}`),
+
+  // Quests
+  getQuests: (characterId) => request(`/quests/${characterId}`),
+  createQuestFromNPC: (characterId, npcId) =>
+    request(`/quests/${characterId}/${npcId}`, { method: 'POST' }),
+  completeQuest: (characterId, questId) =>
+    request(`/quests/${characterId}/${questId}/complete`, { method: 'POST' }),
 };

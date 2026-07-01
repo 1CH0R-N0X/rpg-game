@@ -8,3 +8,4 @@ gem 'activerecord', '~> 7.0'
 gem 'rack', '~> 2.2'
 gem 'json', '~> 2.6'
 gem 'dotenv', '~> 2.8'
+# gem 'ruby-openai', '~> 3.0'  # Uncomment when you have OpenAI API key
