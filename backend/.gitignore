@@ -1,0 +1,7 @@
+*.db
+*.db-journal
+.DS_Store
+Gemfile.lock
+.env
+node_modules/
+*.log
