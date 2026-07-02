@@ -2,6 +2,8 @@
 /.bundle
 /vendor/bundle
 /db/*.db
+/backend/db/*.db
+/backend/db/*.db-*
 
 # Node
 /frontend/node_modules

@@ -17,11 +17,9 @@ class RelationshipsController
       end
       
       relationships = Relationship.where(character_id: character_id).map(&:to_api_hash)
-      content_type :json
-      { success: true, relationships: relationships }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, relationships: relationships }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -44,11 +42,9 @@ class RelationshipsController
       relationship.notes = "#{context} (#{point_change > 0 ? '+' : ''}#{point_change})"
       relationship.save
       
-      content_type :json
-      { success: true, relationship: relationship.to_api_hash }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, relationship: relationship.to_api_hash }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 end

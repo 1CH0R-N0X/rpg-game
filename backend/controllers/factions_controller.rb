@@ -2,11 +2,9 @@ class FactionsController
   def self.get_all(character_id)
     begin
       factions = Faction.where(character_id: character_id).map(&:to_api_hash)
-      content_type :json
-      { success: true, factions: factions }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, factions: factions }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -24,11 +22,9 @@ class FactionsController
         alignment: data['alignment'] || 'Neutral'
       )
       
-      content_type :json
-      { success: true, faction: faction.to_api_hash }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, faction: faction.to_api_hash }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -40,11 +36,9 @@ class FactionsController
         npc_id: npc_id
       )
       
-      content_type :json
-      { success: true, member: member }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, member: member }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 end

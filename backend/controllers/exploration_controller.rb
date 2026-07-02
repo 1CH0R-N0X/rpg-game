@@ -15,15 +15,9 @@ class ExplorationController
       # Generate encounter
       encounter = ExplorationEngine.generate_encounter(character, location)
       
-      content_type :json
-      {
-        success: true,
-        location: location.to_api_hash,
-        encounter: encounter.to_api_hash
-      }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, location: location.to_api_hash, encounter: encounter.to_api_hash }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -34,11 +28,9 @@ class ExplorationController
         .limit(limit)
         .map(&:to_api_hash)
       
-      content_type :json
-      { success: true, encounters: encounters }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, encounters: encounters }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 end

@@ -2,33 +2,27 @@ class CharacterController
   def self.create(params)
     begin
       character = Character.create_from_params(params)
-      content_type :json
-      { success: true, character: character.to_api_hash }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, character: character.to_api_hash }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
   def self.get(id)
     begin
       character = Character.find(id)
-      content_type :json
-      { success: true, character: character.to_api_hash }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, character: character.to_api_hash }.to_json]
     rescue ActiveRecord::RecordNotFound
-      status 404
-      { success: false, error: 'Character not found' }.to_json
+      [404, { 'Content-Type' => 'application/json' }, { success: false, error: 'Character not found' }.to_json]
     end
   end
 
   def self.list
     begin
       characters = Character.all.map(&:to_api_hash)
-      content_type :json
-      { success: true, characters: characters }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, characters: characters }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -44,11 +38,9 @@ class CharacterController
         level: update_params['level'] || character.level
       )
       
-      content_type :json
-      { success: true, character: character.to_api_hash }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, character: character.to_api_hash }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 end

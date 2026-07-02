@@ -12,11 +12,9 @@ class InventoryController
         rarity: data['rarity'] || 'common'
       )
       
-      content_type :json
-      { success: true, item: item.to_api_hash }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, item: item.to_api_hash }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -25,11 +23,9 @@ class InventoryController
       character = Character.find(character_id)
       items = character.inventory_items.map(&:to_api_hash)
       
-      content_type :json
-      { success: true, inventory: items, coins: character.coins }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, inventory: items, coins: character.coins }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 end

@@ -37,11 +37,9 @@ class CombatController
         )
       end
       
-      content_type :json
-      { success: true, combat: combat.to_api_hash }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, combat: combat.to_api_hash }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -59,22 +57,18 @@ class CombatController
         # Handle skill check in combat
       end
       
-      content_type :json
-      { success: true, combat: combat.to_api_hash, action_result: data }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, combat: combat.to_api_hash, action_result: data }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
   def self.get_state(combat_id)
     begin
       combat = CombatState.find(combat_id)
-      content_type :json
-      { success: true, combat: combat.to_api_hash }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, combat: combat.to_api_hash }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 end

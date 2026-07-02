@@ -10,17 +10,9 @@ class GameController
       
       result = GameEngine.roll_skill_check(stat_value)
       
-      content_type :json
-      {
-        success: true,
-        character_id: character_id,
-        skill: data['skill_name'],
-        stat: stat_name,
-        result: result
-      }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, character_id: character_id, skill: data['skill_name'], stat: stat_name, result: result }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 end

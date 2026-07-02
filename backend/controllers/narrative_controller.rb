@@ -10,11 +10,9 @@ class NarrativeController
         description: description
       )
       
-      content_type :json
-      { success: true, description: description }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, description: description }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -26,11 +24,9 @@ class NarrativeController
       
       dialogue = NarrativeEngine.generate_npc_dialogue(npc, nil, rel_points)
       
-      content_type :json
-      { success: true, dialogue: dialogue }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, dialogue: dialogue }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -41,11 +37,9 @@ class NarrativeController
         .limit(limit)
         .map(&:to_api_hash)
       
-      content_type :json
-      { success: true, events: events }.to_json
+      [200, { 'Content-Type' => 'application/json' }, { success: true, events: events }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+      [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 end

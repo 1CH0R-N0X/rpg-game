@@ -2,11 +2,9 @@ class ReputationController
   def self.get_all(character_id)
     begin
       reputations = Reputation.where(character_id: character_id).map(&:to_api_hash)
-      content_type :json
-      { success: true, reputations: reputations }.to_json
+        [200, { 'Content-Type' => 'application/json' }, { success: true, reputations: reputations }.to_json]
     rescue => e
-      status 400
-      { success: false, error: e.message }.to_json
+        [400, { 'Content-Type' => 'application/json' }, { success: false, error: e.message }.to_json]
     end
   end
 
@@ -25,8 +23,7 @@ class ReputationController
       reputation.points += point_change
       reputation.save
       
-      content_type :json
-      { success: true, reputation: reputation.to_api_hash }.to_json
+        [200, { 'Content-Type' => 'application/json' }, { success: true, reputation: reputation.to_api_hash }.to_json]
     rescue => e
       status 400
       { success: false, error: e.message }.to_json
