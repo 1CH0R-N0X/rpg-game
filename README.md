@@ -1,3 +1,44 @@
+# N.O.X — Nexus Of eXiles
+
+Small web-based D&D-inspired RPG project. This repository contains a Ruby/Sinatra backend and a React frontend.
+
+Getting started (local development)
+
+Backend (Ruby)
+
+```bash
+cd backend
+bundle install
+ruby db/init.rb
+rackup config.ru -o 0.0.0.0
+```
+
+Frontend (React)
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+API
+
+- Health: `GET /api/health`
+- Characters: `POST /api/characters`, `GET /api/characters`, `GET /api/characters/:id`
+
+Roadmap / Suggestions
+
+- Progression systems (talent trees, equipment tiers)
+- More factions, branching quests, procedural side content
+- Improved combat: cooldowns, AI behaviors, combat log visualization
+- Narrative AI integration (optional, via OpenAI)
+- Authentication and request validation
+- Frontend: responsive design, accessibility, onboarding
+- Tests and CI (unit/integration)
+
+Contributing
+
+See CONTRIBUTING.md for contribution guidelines.
 # Dark RPG - D&D Text-Based Web Game
 
 A full-stack D&D-style text-based RPG web game with terminal aesthetic, built with React (frontend) and Ruby + natural_20 (backend).

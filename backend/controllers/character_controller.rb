@@ -1,6 +1,13 @@
 class CharacterController
   def self.create(params)
     begin
+      data = JSON.parse(params) rescue params
+      require_relative '../lib/validation'
+      ok, err = Validation.require_fields(data, 'name')
+      unless ok
+        return [400, { 'Content-Type' => 'application/json' }, { success: false, error: err }.to_json]
+      end
+
       character = Character.create_from_params(params)
       [200, { 'Content-Type' => 'application/json' }, { success: true, character: character.to_api_hash }.to_json]
     rescue => e

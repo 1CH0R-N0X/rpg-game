@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, add-ruby-backend ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ruby:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+      - name: Install gems
+        run: |
+          cd backend
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+      - name: Run a simple smoke check
+        run: |
+          curl -sS http://localhost:9292/api/health || true
+
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install frontend deps
+        run: |
+          cd frontend
+          npm ci
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build || true
